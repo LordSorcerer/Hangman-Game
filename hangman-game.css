@@ -1,0 +1,35 @@
+div {
+    border: red 5px solid;
+}
+
+
+.clearfix:after {
+	content:" ";
+	clear: both;
+}
+
+.float-left {
+	float: left;
+}
+
+#containerMain{
+
+	background-color:blue;
+}
+
+#containerText {
+    float: left;
+    width: 400px;
+    height: 400px;
+}
+
+#containerGraphics {
+    float: left;
+    width: 400px;
+    height: 400px;
+}
+
+#guesses, #puzzle {
+	width: 250px;
+	height: 100px;
+}

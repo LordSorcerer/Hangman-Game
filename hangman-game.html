@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>U.S.S. Hangman</title>
+    <link rel="stylesheet" type="text/css" href="./hangman-game.css">
+</head>
+
+<body>
+    <div id="containerMain" class="clearfix">Game Frame
+        <div id="containerText">Left Frame - Text/Letters Guessed
+            <div id="puzzle" class="float-left">
+                <h3>Passcode</h3>
+                <p id=targetStatus></p>
+            </div>
+            <div id="guesses" class="float-left">
+                <h3>.:Letters Guessed:.</h3>
+                <p id="lettersGuessed"></p>
+            </div>
+        </div>
+        <div id="containerGraphics">Right Frame - Ship/Graphics
+        </div>
+    </div>
+    <script type="text/javascript">
+    var wordListEasy = ["fish", "dog", "cat", "rat", "pie"],
+        wordListHard = ["artificial", "mechanical", "adroitness", "mandibles", "incredible"],
+        targetWord = [],
+        targetWordRevealed = [],
+        userGuesses = [];
+    var targetLettersCorrect = 0,
+        userFuel = 100;
+
+    var userKey = "",
+        userKeyCode = "";
+
+    var htmlTargetStatus = document.getElementById("targetStatus"),
+        htmlLettersGuessed = document.getElementById("lettersGuessed");
+
+    resetPuzzle();
+
+
+    // Determines which key was pressed
+    document.onkeyup = function(event) {
+        userKeyCode = event.keyCode;
+        userKey = event.key;
+
+        /*If the key pressed is a letter (ascii code between 65 and 90 inclusive - no need to check for uppercase as event.keyCode is always lowercase), run checkLetter ()*/
+        if (userKeyCode >= 65 && userKeyCode <= 90) {
+            /*indexOf() is used to check the player's guess against all previous guesses, stored in an array. If the player guesses a letter not previously guessed, check it for a match, otherwise don't. */
+            if (userGuesses.indexOf(userKey) == -1) {
+                userGuesses.push(userKey);
+                htmlLettersGuessed.innerHTML = userGuesses.join(", ");
+                //Run checkletter () for each index of targetWord to see if one or more letters match
+                targetWord.forEach(checkLetter);
+                //Check to see if the revealed word and target word match.  If they do, you win!
+                checkTargetWord();
+
+            }
+            console.log("User Guesses: " + userGuesses);
+        }
+
+    };
+
+    /*Checks to see if the user's key matches each letter in the targetWord.  If so, increments targetLettersCorrect, adds the letter(s) to targetWordRevealed at [index] and updates the html element that displays the puzzle in progress.*/
+
+    function checkLetter(letter, index) {
+        if (userKey == letter) {
+            targetLettersCorrect++;
+            targetWordRevealed[index] = letter;
+            htmlTargetStatus.innerHTML = targetWordRevealed.join(" ");
+
+        }
+    };
+
+    //Placed this in a function just in case I decided to modify it later.  Checks the # of correct letters to the targetWord array's length.  If they match, all letters have been guessed.
+    function checkTargetWord() {
+        if (targetLettersCorrect === targetWord.length) {
+            console.log("YOU WIN!!!");
+
+        }
+    };
+
+    function resetPuzzle() {
+
+
+        getTargetWord(wordListHard);
+
+        for (i = 0; i < targetWord.length; i++) {
+            targetWordRevealed.push("_");
+        }
+        htmlTargetStatus.innerHTML = targetWordRevealed.join(" ");
+        userFuel = 100;
+        targetLettersCorrect = 0;
+        userGuesses = [];
+    };
+    /*Loads a new targetWord when passed a word list (array of strings)*/
+    function getTargetWord(list) {
+    	/*Randomize an index number from 0 to the end of the list*/
+        var randomNum = Math.floor(Math.random() * (list.length - 1));
+        /*Assign string in randomized index number of list to randomWord for clarity*/
+        var randomWord = list[randomNum];
+        console.log("Random #: " + randomNum);
+        /*Loads each letter of the word into the targetWord array*/
+        for (i = 0; i < randomWord.length; i++) {
+            targetWord.push(randomWord[i]);
+        }
+        console.log(targetWord);
+    };
+    </script>
+</body>
+
+</html>
