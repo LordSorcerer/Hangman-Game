@@ -18,7 +18,6 @@ var gallowsGame = {
     targetLettersCorrect: 0,
     userFuel: 10,
     burnFuel: true,
-    /*Checks to see if the user's key matches each letter in the targetWord.  If so, increments targetLettersCorrect, adds the letter(s) to targetWordRevealed at [index] and updates the html element that displays the puzzle in progress.*/
 
     /*Loads a new targetWord from a word list (array of strings) passed as an argument*/
     getTargetWord: function(list) {
@@ -49,6 +48,7 @@ var gallowsGame = {
         this.htmlLettersGuessed.innerHTML = "";
         this.htmlBarFuel.innerHTML = "OOOOOOOOOO";
     },
+    /*Checks to see if the user's key matches each letter in the targetWord.  If so, increments targetLettersCorrect, adds the letter(s) to targetWordRevealed at [index] and updates the html element that displays the puzzle in progress.*/
 
     checkLetter: function(letter, index) {
         debugger;
