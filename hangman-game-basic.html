@@ -81,7 +81,7 @@
 
         checkLetter: function(letter, index) {
         	debugger;
-            if (gallowsGame.userKey == letter) {
+            if (this.userKey == letter) {
                 console.log("targetLEttersCorrecT:" + this.targetLettersCorrect);
                 this.targetLettersCorrect++;
                 this.targetWordRevealed[index] = letter;
@@ -128,8 +128,8 @@
                 if (this.userGuesses.indexOf(this.userKey) == -1) {
                     this.userGuesses.push(this.userKey);
                     this.htmlLettersGuessed.innerHTML = this.userGuesses.join(", ");
-                    //Run checkletter () for each index of targetWord to see if one or more letters match
-                    this.targetWord.forEach(this.checkLetter);
+                    //Run checkletter () for each index of targetWord to see if one or more letters match.  First time using .bind() to get around the scope issues.  I'm going to have to study this in detail
+                    this.targetWord.forEach(this.checkLetter.bind(this));
                     //Check to see if the revealed word and target word match.  If they do, you win!
                     this.checkTargetWord();
                     /*Bookkeeping phase. Check to see whether or not a hazard is affecting the player and applies the hazard accordingly.  In this case, running out of fuel is the hazard in question but others may apply in future versions*/
@@ -141,15 +141,9 @@
 
     //Initialize the game
     gallowsGame.resetPuzzle();
-    console.log("targetWord: " + gallowsGame.targetWord);
     // Checks for a keypress in order to advance the game
     document.onkeyup = function(event) {
         gallowsGame.runGame(event.keyCode, event.key.toLowerCase());
-
-
-        /* gallowsGame.userKeyCode = event.keyCode;
-         gallowsGame.userKey = event.key.toLowerCase();
-         gallowsGame.runGame();*/
     };
     </script>
 </body>
