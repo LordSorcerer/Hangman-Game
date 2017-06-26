@@ -7,34 +7,43 @@
 </head>
 
 <body>
-    <div id="containerMain" class="clearfix">Game Frame
-        <div id="containerText">Left Frame - Text/Letters Guessed
+    <div id="containerMain" class="clearfix">
+        <div id="containerText">
             <div id="puzzle" class="float-left">
                 <h3>Passcode</h3>
                 <p id=targetStatus></p>
+            </div>
+            <div id="hazardTracker" class="float-left">
+                <h3>Fuel Remaining</h3>
+                <span id="barFuel"></span>
             </div>
             <div id="guesses" class="float-left">
                 <h3>.:Letters Guessed:.</h3>
                 <p id="lettersGuessed"></p>
             </div>
         </div>
-        <div id="containerGraphics">Right Frame - Ship/Graphics
+        <div id="containerGraphics">
         </div>
     </div>
     <script type="text/javascript">
-    var wordListEasy = ["fish", "dog", "cat", "rat", "pie"],
-        wordListHard = ["artificial", "mechanical", "adroitness", "mandibles", "incredible"],
+    //Sample word lists - easy and hard - followed by arrays for letters
+    var wordListEasy = ["agent", "clean", "bones", "risen", "stern"],
+        wordListMedium = ["artificial", "mechanical", "adroitness", "mandibles", "incredible"],
+        wordListHard = ["chronological","maladjusted","singlemindedness","interspersed","duodecahedron"],
         targetWord = [],
         targetWordRevealed = [],
         userGuesses = [];
-    var targetLettersCorrect = 0,
-        userFuel = 100;
-
+    //Key input strings
     var userKey = "",
         userKeyCode = "";
-
+    //HTML references
     var htmlTargetStatus = document.getElementById("targetStatus"),
-        htmlLettersGuessed = document.getElementById("lettersGuessed");
+        htmlLettersGuessed = document.getElementById("lettersGuessed"),
+        htmlBarFuel = document.getElementById("barFuel");
+    //Crunchy game stats
+    var targetLettersCorrect = 0,
+        userFuel = 10,
+        burnFuel = true;
 
     resetPuzzle();
 
@@ -42,9 +51,9 @@
     // Determines which key was pressed
     document.onkeyup = function(event) {
         userKeyCode = event.keyCode;
-        userKey = event.key;
+        userKey = event.key.toLowerCase();
 
-        /*If the key pressed is a letter (ascii code between 65 and 90 inclusive - no need to check for uppercase as event.keyCode is always lowercase), run checkLetter ()*/
+        /*If the key pressed is a letter (ascii code between 65 and 90 inclusive), run checkLetter ()*/
         if (userKeyCode >= 65 && userKeyCode <= 90) {
             /*indexOf() is used to check the player's guess against all previous guesses, stored in an array. If the player guesses a letter not previously guessed, check it for a match, otherwise don't. */
             if (userGuesses.indexOf(userKey) == -1) {
@@ -55,8 +64,9 @@
                 //Check to see if the revealed word and target word match.  If they do, you win!
                 checkTargetWord();
 
+                /*Check to see whether or not a hazard is affecting the player and applies the hazard accordingly.  In this case, running out of fuel is the hazard in question but others may apply in future versions*/
+                burnFuel = checkHazard(burnFuel, htmlBarFuel);
             }
-            console.log("User Guesses: " + userGuesses);
         }
 
     };
@@ -64,38 +74,50 @@
     /*Checks to see if the user's key matches each letter in the targetWord.  If so, increments targetLettersCorrect, adds the letter(s) to targetWordRevealed at [index] and updates the html element that displays the puzzle in progress.*/
 
     function checkLetter(letter, index) {
-        if (userKey == letter) {
+        if (userKey === letter) {
             targetLettersCorrect++;
             targetWordRevealed[index] = letter;
             htmlTargetStatus.innerHTML = targetWordRevealed.join(" ");
-
+            burnFuel = false;
         }
     };
 
     //Placed this in a function just in case I decided to modify it later.  Checks the # of correct letters to the targetWord array's length.  If they match, all letters have been guessed.
     function checkTargetWord() {
         if (targetLettersCorrect === targetWord.length) {
-            console.log("YOU WIN!!!");
-
+            if (confirm("YOU WIN! Play again?")) {
+                resetPuzzle();
+            } else {
+                document.write("Yeeargh!  Destroy the page! (placeholder!)");
+            }
         }
+
+
     };
 
     function resetPuzzle() {
-
-
-        getTargetWord(wordListHard);
+        targetWord = [];
+        targetWordRevealed = [];
+        userGuesses = [];
+        userFuel = 10;
+        burnFuel = true;
+        targetLettersCorrect = 0;
+        getTargetWord(wordListMedium);
 
         for (i = 0; i < targetWord.length; i++) {
             targetWordRevealed.push("_");
         }
+        //Reset the HTML element display
         htmlTargetStatus.innerHTML = targetWordRevealed.join(" ");
-        userFuel = 100;
-        targetLettersCorrect = 0;
-        userGuesses = [];
+        htmlLettersGuessed.innerHTML = "";
+        htmlBarFuel.innerHTML = "OOOOOOOOOO";
     };
-    /*Loads a new targetWord when passed a word list (array of strings)*/
+
+    // 
+
+    /*Loads a new targetWord from a word list (array of strings) passed as an argument*/
     function getTargetWord(list) {
-    	/*Randomize an index number from 0 to the end of the list*/
+        /*Randomize an index number from 0 to the end of the list*/
         var randomNum = Math.floor(Math.random() * (list.length - 1));
         /*Assign string in randomized index number of list to randomWord for clarity*/
         var randomWord = list[randomNum];
@@ -104,8 +126,26 @@
         for (i = 0; i < randomWord.length; i++) {
             targetWord.push(randomWord[i]);
         }
-        console.log(targetWord);
     };
+
+    function checkHazard(hazardToggle, hazardBar) {
+        if (hazardToggle === true) {
+            userFuel--;
+            var temp = hazardBar.innerHTML;
+            hazardBar.innerHTML = temp.substring(0, temp.length - 1);
+            if (userFuel == 0) {
+                if (confirm("Your ship has run out of fuel.  Honestly, you're lucky to have gotten to an escape pod in time!  Play again?")) {
+                    resetPuzzle();
+                } else {
+                    document.write("Yeeargh!  Destroy the page!");
+                }
+            }
+
+        } else {
+            hazardToggle = true;
+        }
+        return hazardToggle;
+    }
     </script>
 </body>
 
