@@ -96,7 +96,7 @@ var gallowsGame = {
             var temp = hazardBar.innerHTML;
             hazardBar.innerHTML = temp.substring(0, temp.length - 1);
             if (this.userFuel == 0) {
-                if (confirm("Your ship has run out of fuel.  Honestly, you're lucky to have gotten to an escape pod in time!  Play again?")) {
+                if (confirm("The target computer system has traced your connection back to its source: your brain.  Disconnect now!  NOW! ...   Play again?")) {
                     this.resetPuzzle();
                 } else {
                     document.write("Yeeargh!  Destroy the page!");
