@@ -1,23 +1,27 @@
 //Main game object
 var gallowsGame = {
-    //Sample word lists - easy, medium and hard - followed by empty arrays for letters
-    wordListEasy: ["agent", "clean", "bones", "risen", "stern"],
-    wordListMedium: ["artificial", "mechanical", "adroitness", "mandibles", "incredible"],
-    wordListHard: ["chronological", "quirksome", "singlemindedness", "interspersed", "duodecahedron"],
+    //Sample word lists - easy, medium and hard - followed by empty arrays for letters.  Could also be loaded into an external file to keep the code trim.
+    wordListEasy: ["agent", "clean", "bones", "risen", "stern", "loyal", "choir "],
+    wordListMedium: ["artificial", "mechanical", "adroitness", "mandibles", "incredible", "severity", "glimpse"],
+    wordListHard: ["chronological", "serendipitous", "singlemindedness", "interspersed", "duodecahedron", "unquestionable", "impugnable"],
     targetWord: [],
     targetWordRevealed: [],
     userGuesses: [],
     //event.key manipulation strings
     userKey: "",
     userKeyCode: "",
-    //HTML references
+    //HTML DOM references
     htmlTargetStatus: document.getElementById("targetStatus"),
     htmlLettersGuessed: document.getElementById("lettersGuessed"),
     htmlBarFuel: document.getElementById("barFuel"),
-    //Crunchy game stats and other goodness.  It's like trail mix, no really.
+    //Crunchy game stats and other goodness.  Just like trail mix!
     targetLettersCorrect: 0,
     userFuel: 10,
     burnFuel: true,
+
+
+
+
 
     /*Loads a new targetWord from a word list (array of strings) passed as an argument*/
     getTargetWord: function(list) {
@@ -53,7 +57,6 @@ var gallowsGame = {
     checkLetter: function(letter, index) {
         debugger;
         if (this.userKey == letter) {
-            console.log("targetLEttersCorrecT:" + this.targetLettersCorrect);
             this.targetLettersCorrect++;
             this.targetWordRevealed[index] = letter;
             this.htmlTargetStatus.innerHTML = this.targetWordRevealed.join(" ");
@@ -63,7 +66,7 @@ var gallowsGame = {
     //Placed this in a function just in case I decided to modify it later.  Checks the # of correct letters to the targetWord array's length.  If they match, all letters have been guessed.
     checkTargetWord: function() {
         if (this.targetLettersCorrect === this.targetWord.length) {
-            if (confirm("YOU WIN! Play again?")) {
+            if (confirm("The word was '" + this.targetWordRevealed.join("") + "'! YOU WIN! Play again?")) {
                 this.resetPuzzle();
             } else {
                 document.write("Yeeargh!  Destroy the page! (placeholder!)");
@@ -74,6 +77,14 @@ var gallowsGame = {
     checkHazard: function(hazardToggle, hazardBar) {
         if (hazardToggle === true) {
             this.userFuel--;
+
+            //This part non-functional at the moment.  May be fixed in a future version.
+            if (this.userFuel < 7) {
+                hazardBar.backgroundColor = "yellow";
+            } else if (this.userFuel < 4) {
+                hazardBar.backgroundColor = "red";
+            }
+
             var temp = hazardBar.innerHTML;
             hazardBar.innerHTML = temp.substring(0, temp.length - 1);
             if (this.userFuel == 0) {
@@ -103,16 +114,23 @@ var gallowsGame = {
                 this.targetWord.forEach(this.checkLetter.bind(this));
                 //Check to see if the revealed word and target word match.  If they do, you win!
                 this.checkTargetWord();
-                /*Bookkeeping phase. Check to see whether or not a hazard is affecting the player and applies the hazard accordingly.  In this case, running out of fuel is the hazard in question but others may apply in future versions*/
+                /*Bookkeeping phase. Check to see whether or not a hazard is affecting the player and apply the hazard accordingly.  In this case, running out of fuel is the hazard in question but others may apply in future versions*/
                 this.burnFuel = this.checkHazard(this.burnFuel, this.htmlBarFuel);
             }
         }
     }
+
 };
 
-//Initialize the game
+//////Main Program//////
+////////////////////////
+
+//Set the mood with spy music
 gallowsGame.resetPuzzle();
+var bgMusic = document.getElementById("myAudio");
+bgMusic.play();
 // Checks for a keypress in order to advance the game
 document.onkeyup = function(event) {
+
     gallowsGame.runGame(event.keyCode, event.key.toLowerCase());
 };
