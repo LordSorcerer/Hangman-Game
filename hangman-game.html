@@ -2,12 +2,15 @@
 <html>
 
 <head>
-    <title>Voyages of the I.S.S. Gallows</title>
+    <title></title>
     <link rel="stylesheet" type="text/css" href="./hangman-game.css">
+    <meta charset="utf-8">
 </head>
 
 <body>
-    <div id="containerMain" class="clearfix">
+    <div id="containerMain">
+        <div id="banner" class="float-left">
+        </div>
         <div id="containerText">
             <div id="puzzle" class="float-left">
                 <h3>Passcode</h3>
@@ -23,17 +26,17 @@
             </div>
         </div>
         <div id="containerGraphics">
+            <h3>Weath</h3>
+            <span id="currentCredits">0</span>
+             <h3>Fame</h3>
+             <span id="currentFame">0</span>
         </div>
+        <!-- Background music shamelessly stolen from soundjig.com -->
+        <audio id="bgMusic" loop=true controls>
+            <source src="downer.mp3" type="audio/mpeg"> Your browser does not support the audio element.
+        </audio>
     </div>
-    <audio id="myAudio">
-        <source src="downer.mp3" type="audio/mpeg"> Your browser does not support the audio element.
-    </audio>
-
-    <script>
-  
-   
-    </script>
-    <!-- Script placed down here because it references html objects not yet defined up in the <head> section-->
+    <!-- Script placed down here because it references html objects not yet defined up in the <head> section.  Can't keep everything straight in your head, I guess. ;) -->
     <script type="text/javascript" src="./hangman-game.js"></script>
 </body>
 

@@ -14,8 +14,12 @@ var gallowsGame = {
     htmlTargetStatus: document.getElementById("targetStatus"),
     htmlLettersGuessed: document.getElementById("lettersGuessed"),
     htmlBarFuel: document.getElementById("barFuel"),
+    htmlCurrentCredits: document.getElementById("currentCredits"),
+    htmlCurrentFame: document.getElementById("currentFame"),
     //Crunchy game stats and other goodness.  Just like trail mix!
     targetLettersCorrect: 0,
+    userCredits: 0,
+    userFame:0,
     userFuel: 10,
     burnFuel: true,
 
@@ -29,7 +33,6 @@ var gallowsGame = {
         var randomNum = Math.floor(Math.random() * (list.length - 1));
         /*Assign string in randomized index number of list to randomWord for clarity*/
         var randomWord = list[randomNum];
-        console.log("Random #: " + randomNum);
         /*Loads each letter of the word into the targetWord array*/
         for (i = 0; i < randomWord.length; i++) {
             this.targetWord.push(randomWord[i]);
@@ -66,7 +69,12 @@ var gallowsGame = {
     //Placed this in a function just in case I decided to modify it later.  Checks the # of correct letters to the targetWord array's length.  If they match, all letters have been guessed.
     checkTargetWord: function() {
         if (this.targetLettersCorrect === this.targetWord.length) {
-            if (confirm("The word was '" + this.targetWordRevealed.join("") + "'! YOU WIN! Play again?")) {
+            this.userCredits += (Math.floor(Math.random() * 250)) + 250;
+            this.userFame++;
+            this.htmlCurrentCredits.innerHTML = this.userCredits;
+            this.htmlCurrentFame.innerHTML = this.userFame;
+            
+            if (confirm("The last word was: " + this.targetWordRevealed.join("") + ". You have acquired some credits as pay for your efforts.  Keep on earning, hacker! Loading next word.")) {
                 this.resetPuzzle();
             } else {
                 document.write("Yeeargh!  Destroy the page! (placeholder!)");
@@ -127,8 +135,9 @@ var gallowsGame = {
 
 //Set the mood with spy music
 gallowsGame.resetPuzzle();
-var bgMusic = document.getElementById("myAudio");
+var bgMusic = document.getElementById("bgMusic");
 bgMusic.play();
+
 // Checks for a keypress in order to advance the game
 document.onkeyup = function(event) {
 

@@ -14,18 +14,33 @@ div {
 #containerMain {
     width: 960px;
     height: 500px;
-    color: black;
+    background-image: url("messy_wires.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#banner {
+    width: 100%;
+    height: 20%;
     margin: auto;
+    background-color: red;
+    background-image: url("game_banner.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border-top: 5px black solid;
+    border-bottom: 5px black solid;
 }
 
 #containerText {
     float: left;
     width: 50%;
-    height: 100%;
-    color: lightgreen;
+    height: 80%;
+    color: #33FF33;
     background-image: url("PCB_4.gif");
     background-repeat: no-repeat;
     background-position: center;
+    background-size: 100% 100%;
     padding: 10%;
     padding-top: 11%;
     padding-left: 11%;
@@ -34,7 +49,20 @@ div {
 #containerGraphics {
     float: right;
     width: 50%;
-    height: 100%;
+    height: 80%;
+    color: #33FF33;
+    background-image: url("screen_0.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 95% 95%;
+    padding: 10%;
+    padding-top: 11%;
+    padding-left: 11%;
+}
+
+#imgScreen {
+    height: 80%;
+    width: 50%;
 }
 
 #puzzle {
