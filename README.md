@@ -1,5 +1,5 @@
 #Bleak Future
-#Github pages:
+
 https://lordsorcerer.github.io/Hangman-Game/
 
 In "Bleak Future" the player takes the role of a hacker, cracking into computer systems all across an irradiated wasteland.
