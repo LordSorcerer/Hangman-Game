@@ -5,4 +5,4 @@
 
 Github pages:
 
-https://lordsorcerer.github.io/Hangman-Game/hangman-game.html
+https://lordsorcerer.github.io/Hangman-Game/
